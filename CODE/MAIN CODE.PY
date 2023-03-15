@@ -7,7 +7,7 @@ from openpyxl import workbook, load_workbook
 from datetime import date
 
 #Constants
-ConstantRows= 3 #No of details for a person
+ConstantRows= 4 #No of details for a person
 Date= int(date.today().day)#setting date
 Days= 31
 i = 'A'
