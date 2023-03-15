@@ -6,6 +6,17 @@ import os
 from openpyxl import workbook, load_workbook
 from datetime import date
 
+#Constants
+ConstantRows= 3 #No of details for a person
+Date= int(date.today().day)#setting date
+Days= 31
+i = 'A'
+j = '2'
+Total = Days+ConstantRows
+Percentage= Total+1
+
+
+
 
 #Opening Excel path
 workbook = load_workbook('ATTENDANCE .xlsx')
@@ -19,6 +30,13 @@ ClassNames=[]
 myList=os.listdir(path)
 print(myList)
 
+#List of Rows
+rows= ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ"]
+
+#To find the dat column to update
+updatecolumn= rows[ConstantRows-1+Date]
+
+
 
 # passing images in image list and spliting names and appending them in ClassName
 for cl in myList:
@@ -28,7 +46,7 @@ for cl in myList:
 print(ClassNames)
 
 #For accessing the total number of people
-people = len(ClassNames)+2
+people = len(ClassNames)+3
 
 
 #Function to append encodings of the images
@@ -48,8 +66,8 @@ cap=cv2.VideoCapture(0)
 #Main Loop for running
 while True:
     ret, img=cap.read()
-    imgS=cv2.resize(img,(0,0),None,0.25,0.25)
-    imgS=cv2.cvtColor(imgS,cv2.COLOR_BGR2RGB)
+    #imgS=cv2.resize(img,(0,0),None,0.25,0.25)
+    imgS=cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
 #Finding Locations of frame and encoding each frame
     faceCurFrame= face_recognition.face_locations(imgS)
     encodeCurFrame=face_recognition.face_encodings(imgS,faceCurFrame)
@@ -66,20 +84,39 @@ while True:
         if matches[matchIndex]:
             name=ClassNames[matchIndex].upper()
             print(name)
+            #color= 'green'
+            y1, x2, y2, x1 = faceLoc
+            cv2.rectangle(imgS, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.rectangle(imgS, (x1, y2 - 35), (x2, y2), (0, 255, 0), cv2.FILLED)
+            cv2.putText(imgS,name,(x1+6,y2-6),cv2.FONT_HERSHEY_COMPLEX,0.4,(255,255,255),1)
+
 
             #Excel updating code
             i='A'
-            updatecolumn= chr(ord('A')+2+int(date.today().day))
             j='2'
             while int(j)<people :
                 if ws[i+j].value==name:
-                    ws[updatecolumn+j].value= 1
+                    ws[updatecolumn+j].value= 'P'
+                    b=ConstantRows
+                    count=0
+                    while b<=Date+ConstantRows:
+                        if ws[rows[b]+j].value=='P':
+                            count+=1
+                        b+=1
+                    ws[rows[Total]+j].value= count        #AI= 34, AJ= 35
+                    ws[rows[Percentage]+j].value= count/int(date.today().day)*100
                     break
                 else:
                     j= str(int(j)+1)
 
             workbook.save('ATTENDANCE .xlsx')
+
+
         else:
+            #color= 'red'
+            y1, x2, y2, x1 = faceLoc
+            cv2.rectangle(imgS, (x1, y1), (x2, y2), (255, 0, 0), 2)
+            cv2.rectangle(imgS, (x1, y2-35), (x2, y2), (255, 0, 0), cv2.FILLED)
             print("NAHI HAI")
 
 
