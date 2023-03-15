@@ -1,0 +1,45 @@
+Sub WebWhatsApp()
+
+'Activate Selenium Type Library: Tools >Reference
+
+Dim bot As New Selenium.ChromeDriver
+
+
+Dim ks As New Keys
+
+'Intit New Chrome instance and navigate to WebWhatsApp
+bot.Start "chrome", "https://webwhatsapp.com/"
+
+bot.Get "/"
+
+'Ask User to scan the qr code and navigate to whatsapp, once logged in , continue with the macro
+MsgBox "PLease scan the QR code .After you are logged in , please confirm this message  box  by clicking "
+
+lastrow = Cells(Row.Count, 2).End(xlUp).Row
+
+For i = 2 To lastrow
+    searchtext = Sheets(1).Range("A" & i).Value
+    
+    textmessage = Sheets(1).Range("B" & i).Value
+    
+    bot.FindElementByXPath("//*[@id='side']/div[1]/div/div/div[2]/div/div[1]/p").Click
+    
+    bot.Wait (500)
+    
+    bot.SendKeys (searchtext)
+    
+    bot.Wait (500)
+    
+    bot.SendKeys (ks.Enter)
+    
+    
+    
+    
+Next i
+
+MsgBox "DONE"
+
+
+
+End Sub
+ 
