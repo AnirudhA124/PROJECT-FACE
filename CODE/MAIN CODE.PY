@@ -12,6 +12,7 @@ Date= int(date.today().day)#setting date
 Days= 31
 i = 'A'
 j = '2'
+holdaystillday= 4
 Total = Days+ConstantRows
 Percentage= Total+1
 
@@ -99,7 +100,7 @@ while True:
                             count+=1
                         b+=1
                     ws[rows[Total]+j].value= count        #AI= 34, AJ= 35
-                    percentageshow= count/int(Date)*100
+                    percentageshow= count/int(Date-holdaystillday)*100
                     ws[rows[Percentage] + j].value= percentageshow
                     break
                 else:
@@ -130,7 +131,7 @@ while True:
 
 
 j='2'
-while int(j)<people:
+while int(j)<people-1:
     count = 0
     b = ConstantRows
     while b <= Date + ConstantRows:
@@ -138,7 +139,7 @@ while int(j)<people:
             count += 1
         b += 1
     ws[rows[Total] + j].value = count  # AI= 34, AJ= 35
-    percentageshow = count / int(Date) * 100
+    percentageshow = count / int(Date-holdaystillday) * 100
     ws[rows[Percentage] + j].value = percentageshow
     j = str(int(j) + 1)
 
