@@ -83,12 +83,7 @@ while True:
         #Matching with DataBase
         if matches[matchIndex]:
             name=ClassNames[matchIndex].upper()
-            print(name)
             #color= 'green'
-            y1, x2, y2, x1 = faceLoc
-            cv2.rectangle(imgS, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            cv2.rectangle(imgS, (x1, y2 - 35), (x2, y2), (0, 255, 0), cv2.FILLED)
-            cv2.putText(imgS,name,(x1+6,y2-6),cv2.FONT_HERSHEY_COMPLEX,0.4,(255,255,255),1)
 
 
             #Excel updating code
@@ -104,13 +99,20 @@ while True:
                             count+=1
                         b+=1
                     ws[rows[Total]+j].value= count        #AI= 34, AJ= 35
-                    ws[rows[Percentage]+j].value= count/int(date.today().day)*100
+                    percentageshow= count/int(Date)*100
+                    ws[rows[Percentage] + j].value= percentageshow
                     break
                 else:
                     j= str(int(j)+1)
 
+
             workbook.save('ATTENDANCE .xlsx')
 
+            y1, x2, y2, x1 = faceLoc
+            cv2.rectangle(imgS, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.rectangle(imgS, (x1, y2 - 35), (x2, y2), (0, 255, 0), cv2.FILLED)
+            cv2.putText(imgS, name+'-'+str(percentageshow), (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
+            print(name+'-'+str(percentageshow))
 
         else:
             #color= 'red'
@@ -125,6 +127,22 @@ while True:
     cv2.imshow('Attendance',imgS)
     if cv2.waitKey(1) == ord('q'):
         break
+
+
+j='2'
+while int(j)<people:
+    count = 0
+    b = ConstantRows
+    while b <= Date + ConstantRows:
+        if ws[rows[b] + j].value == 'P':
+            count += 1
+        b += 1
+    ws[rows[Total] + j].value = count  # AI= 34, AJ= 35
+    percentageshow = count / int(Date) * 100
+    ws[rows[Percentage] + j].value = percentageshow
+    j = str(int(j) + 1)
+
+workbook.save('ATTENDANCE .xlsx')
 
 #releasing all cameras
 cap.release()
