@@ -12,7 +12,7 @@ Date= int(date.today().day)#setting date
 Days= 31
 i = 'A'
 j = '2'
-holdaystillday= 4
+holdaystillday= 0
 Total = Days+ConstantRows
 Percentage= Total+1
 
@@ -112,8 +112,8 @@ while True:
             y1, x2, y2, x1 = faceLoc
             cv2.rectangle(imgS, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.rectangle(imgS, (x1, y2 - 35), (x2, y2), (0, 255, 0), cv2.FILLED)
-            cv2.putText(imgS, name+'-'+str(percentageshow), (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
-            print(name+'-'+str(percentageshow))
+            cv2.putText(imgS, name+'-'+str(round(percentageshow,2)), (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 0.4, (255, 255, 255), 1)
+            print(name+'-'+str(round(percentageshow,2)))
 
         else:
             #color= 'red'
