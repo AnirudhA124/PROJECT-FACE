@@ -9,7 +9,7 @@ from datetime import date
 #Constants
 ConstantRows= 4 #No of details for a person
 Date= int(date.today().day)#setting date
-Days= 31
+Days= 30 #/31
 i = 'A'
 j = '2'
 holdaystillday= 0
